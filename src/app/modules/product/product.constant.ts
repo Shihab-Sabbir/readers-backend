@@ -2,10 +2,11 @@ import { IProductFilters, IProductSearch } from './product.interface';
 
 export const productSearchFields: (keyof IProductSearch)[] = [
   'genre',
-  'publicationDate',
+  'author',
+  'title',
 ];
 
 export const productFilterFields: (keyof IProductFilters)[] = [
-  'minPrice',
-  'maxPrice',
+  'genre',
+  'publicationDate',
 ];

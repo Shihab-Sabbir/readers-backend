@@ -43,7 +43,6 @@ const getSingleProduct = async (id: string): Promise<IProduct | null> => {
   const product = await Product.findById(id);
   return product;
 };
-
 const updateProduct = async (
   id: string,
   updatedData: Partial<IProduct>
@@ -64,12 +63,11 @@ const handleWishList = async (
   userInfo: JwtPayload
 ): Promise<IProduct | null> => {
   const { phoneNumber } = userInfo;
-
   try {
     // Find the product by ID
     const product = await Product.findById(id);
 
-    if (product) {
+    if (product && phoneNumber) {
       // Check if phoneNumber is already in the wishedBy array
       const index = product.wishedBy?.indexOf(phoneNumber);
 
@@ -95,6 +93,32 @@ const handleWishList = async (
   }
 };
 
+const handleReview = async (
+  id: string,
+  userInfo: JwtPayload,
+  review
+): Promise<IProduct | null> => {
+  const { phoneNumber } = userInfo;
+  console.log(phoneNumber,review)
+  try {
+    // Find the product by ID
+    const product = await Product.findById(id);
+
+    if (product && phoneNumber) {
+      product.review?.push(review);
+      const updatedProduct = await product.save();
+
+      return updatedProduct;
+    } else {
+      return null; 
+    }
+  } catch (error) {
+    // Handle any errors that occur during the process
+    console.error('Error handling wish list:', error);
+    throw error;
+  }
+};
+
 const handleReadList = async (
   id: string,
   userInfo: JwtPayload
@@ -105,7 +129,7 @@ const handleReadList = async (
     // Find the product by ID
     const product = await Product.findById(id);
 
-    if (product) {
+    if (product && phoneNumber) {
       // Check if phoneNumber is already in the readList array
       const index = product.readList?.findIndex(
         (reading: IReading) => reading.phoneNumber === phoneNumber
@@ -188,4 +212,5 @@ export const ProductService = {
   handleWishList,
   handleReadList,
   handleReadStatus,
+  handleReview
 };

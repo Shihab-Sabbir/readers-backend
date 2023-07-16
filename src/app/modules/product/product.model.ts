@@ -46,6 +46,25 @@ const productSchema = new Schema<IProduct>(
       ],
       default: null,
     },
+    review: {
+      type: [
+        {
+          name: {
+            type: String,
+            required: true,
+          },
+          date: {
+            type: String,
+            required: true,
+          },
+          body: {
+            type: String,
+            required: true,
+          },
+        },
+      ],
+      default: null,
+    },
   },
   {
     timestamps: true,

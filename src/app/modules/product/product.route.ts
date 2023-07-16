@@ -6,6 +6,7 @@ const productRoutes = express.Router();
 productRoutes.post('/', auth(), ProductController.createProduct);
 productRoutes.patch('/wish/:id', auth(), ProductController.handleWishList);
 productRoutes.patch('/read-list/:id', auth(), ProductController.handleReadList);
+productRoutes.patch('/review/:id', auth(), ProductController.handleReview);
 productRoutes.patch(
   '/read-status/:id',
   auth(),

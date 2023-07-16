@@ -66,6 +66,27 @@ const getSingleProduct: RequestHandler = async (req, res, next) => {
   }
 };
 
+const handleReview: RequestHandler = async (req, res, next) => {
+  try {
+    const id: string = req.params.id;
+    const userInfo: JwtPayload | null = req.user;
+    const review = req.body.review;
+    const result = await ProductService.handleReview(
+      id,
+      userInfo as JwtPayload,
+      review
+    );
+
+    sendResponse<IProduct>(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      data: result,
+      message: 'Product updated successfully !',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 const handleWishList: RequestHandler = async (req, res, next) => {
   try {
     const id: string = req.params.id;
@@ -169,5 +190,6 @@ export const ProductController = {
   deleteProduct,
   handleWishList,
   handleReadList,
-  handleReadStatus
+  handleReadStatus,
+  handleReview
 };

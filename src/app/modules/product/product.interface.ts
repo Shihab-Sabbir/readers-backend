@@ -6,6 +6,12 @@ export interface IReading {
   status?: 'reading' | 'read soon' | 'finished';
 }
 
+interface IReview {
+  name: string;
+  date: string;
+  body: string;
+}
+
 export type IProduct = {
   title: string;
   author: string;
@@ -15,16 +21,18 @@ export type IProduct = {
   addedBy: Types.ObjectId | IUser;
   wishedBy?: string[] | null;
   readList?: IReading[] | null;
+  review?: IReview[] | null;
 };
 
 export type ProductModel = Model<IProduct, Record<string, unknown>>;
 
 export type IProductSearch = {
+  title?: string;
+  author?: string;
   genre?: string;
-  publicationDate?: string;
 };
 
 export type IProductFilters = {
-  minPrice?: number;
-  maxPrice?: number;
+  genre?: string;
+  publicationDate?: string;
 };
