@@ -6,7 +6,7 @@ export interface IReading {
   status?: 'reading' | 'read soon' | 'finished';
 }
 
-interface IReview {
+export interface IReview {
   name: string;
   date: string;
   body: string;
@@ -17,6 +17,7 @@ export type IProduct = {
   author: string;
   genre: string;
   publicationDate: string;
+  publicationYear?: string;
   image?: string;
   addedBy: Types.ObjectId | IUser;
   wishedBy?: string[] | null;
@@ -34,5 +35,5 @@ export type IProductSearch = {
 
 export type IProductFilters = {
   genre?: string;
-  publicationDate?: string;
+  publicationYear?: string;
 };

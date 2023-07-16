@@ -8,5 +8,5 @@ export const productSearchFields: (keyof IProductSearch)[] = [
 
 export const productFilterFields: (keyof IProductFilters)[] = [
   'genre',
-  'publicationDate',
+  'publicationYear',
 ];

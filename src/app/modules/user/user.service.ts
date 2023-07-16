@@ -3,10 +3,13 @@ import ApiError from '../../../errors/ApiError';
 import { IMyProfile, IUser } from './user.interface';
 import User from './user.model';
 import { JwtPayload } from 'jsonwebtoken';
-import { IName } from '../admin/admin.interface';
+
+interface IName {
+  firstName: string;
+  lastName: string;
+}
 
 const createUser = async (userInfo: IUser): Promise<IUser | null> => {
-  const { role } = userInfo;
   const createdUser = await User.create(userInfo);
   return createdUser;
 };
@@ -25,14 +28,7 @@ const updateUser = async (
   id: string,
   updatedData: Partial<IUser>
 ): Promise<IUser | null> => {
-  const { role } = updatedData;
-
-  if (role === 'seller') {
-    updatedData.budget = 0;
-  } else {
-    updatedData.income = 0;
-  }
-
+ 
   const updatedUser = await User.findOneAndUpdate({ _id: id }, updatedData, {
     new: true,
     runValidators: true,

@@ -3,7 +3,7 @@ import { ProductService } from './product.service';
 import { RequestHandler } from 'express';
 import sendResponse from '../../../shared/utils/sendResponse';
 import { productFilterFields, productSearchFields } from './product.constant';
-import { IProduct } from './product.interface';
+import { IProduct, IReview } from './product.interface';
 import { getSearchAndPaginationOptions } from '../../../shared/utils/searchAndPagination/getSearchAndPaginationOptions';
 import { JwtPayload } from 'jsonwebtoken';
 
@@ -70,7 +70,7 @@ const handleReview: RequestHandler = async (req, res, next) => {
   try {
     const id: string = req.params.id;
     const userInfo: JwtPayload | null = req.user;
-    const review = req.body.review;
+    const review: IReview = req.body.review;
     const result = await ProductService.handleReview(
       id,
       userInfo as JwtPayload,
@@ -131,7 +131,7 @@ const handleReadStatus: RequestHandler = async (req, res, next) => {
   try {
     const id: string = req.params.id;
     const userInfo: JwtPayload | null = req.user;
-    const status = req.body.status
+    const status = req.body.status;
     const result = await ProductService.handleReadStatus(
       id,
       userInfo as JwtPayload,
@@ -191,5 +191,5 @@ export const ProductController = {
   handleWishList,
   handleReadList,
   handleReadStatus,
-  handleReview
+  handleReview,
 };

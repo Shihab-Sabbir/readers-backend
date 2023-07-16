@@ -1,16 +1,21 @@
-import { IProduct, IReading } from './product.interface';
+import { IProduct, IReading, IReview } from './product.interface';
 import { IGenericPaginationResponse } from '../../../shared/interfaces/interfaces';
 import Product from './product.model';
 import { JwtPayload } from 'jsonwebtoken';
+import User from '../user/user.model';
+import { IUser } from '../user/user.interface';
 
 const createProduct = async (
   productInfo: IProduct,
   requestedUser: JwtPayload
 ): Promise<IProduct | null> => {
   const { phoneNumber } = requestedUser;
+  const { publicationDate } = productInfo;
+  const publicationYear = publicationDate.slice(6);
   const createdProduct = await Product.create({
     ...productInfo,
     addedBy: phoneNumber,
+    publicationYear,
   });
   return createdProduct;
 };
@@ -43,6 +48,7 @@ const getSingleProduct = async (id: string): Promise<IProduct | null> => {
   const product = await Product.findById(id);
   return product;
 };
+
 const updateProduct = async (
   id: string,
   updatedData: Partial<IProduct>
@@ -96,21 +102,24 @@ const handleWishList = async (
 const handleReview = async (
   id: string,
   userInfo: JwtPayload,
-  review
+  review: IReview
 ): Promise<IProduct | null> => {
   const { phoneNumber } = userInfo;
-  console.log(phoneNumber,review)
   try {
     // Find the product by ID
     const product = await Product.findById(id);
-
-    if (product && phoneNumber) {
-      product.review?.push(review);
+    const user: IUser | null = await User.findOne({ phoneNumber }).lean();
+    console.log({ user });
+    if (product && user) {
+      const firstName = user.name.firstName;
+      const lastName = user.name.lastName;
+      const name = firstName + ' ' + lastName;
+      product.review?.push({ ...review, name });
       const updatedProduct = await product.save();
 
       return updatedProduct;
     } else {
-      return null; 
+      return null;
     }
   } catch (error) {
     // Handle any errors that occur during the process
@@ -212,5 +221,5 @@ export const ProductService = {
   handleWishList,
   handleReadList,
   handleReadStatus,
-  handleReview
+  handleReview,
 };

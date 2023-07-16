@@ -19,10 +19,13 @@ const productSchema = new Schema<IProduct>(
       type: String,
       required: true,
     },
+    publicationYear: {
+      type: String,
+    },
     image: {
       type: String,
       default:
-        'https://th.bing.com/th/id/OIP.P7U2Y-CRzXANY1pqs6ZyeQAAAA?pid=ImgDet&rs=1',
+        'https://i.ibb.co/kGBTcsd/Free-Book-Cover-Mockup-PSD-For-Branding-2.jpg',
     },
     addedBy: {
       type: String,
